@@ -1,4 +1,4 @@
 package com.gestNutri.dto.response;
 
-public record MoteurOptimisationResponse() {
+public record MoteurOptimisationResponse(FormuleResponse formule, boolean succes, String erreur) {
 }
