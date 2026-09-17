@@ -18,6 +18,7 @@ public class ResultatAnalyse {
 	private String nomNutriment;
 	private Double valeurObtenue;
 	private Double valeurCible;
+	private Double valeurCibleMax;
 	private Boolean conforme;
 
 	@ManyToOne

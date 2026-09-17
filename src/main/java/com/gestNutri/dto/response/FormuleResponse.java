@@ -1,7 +1,6 @@
 package com.gestNutri.dto.response;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public record FormuleResponse(
 	Long id,

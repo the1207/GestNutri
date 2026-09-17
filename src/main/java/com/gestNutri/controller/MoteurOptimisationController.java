@@ -3,6 +3,7 @@ package com.gestNutri.controller;
 import com.gestNutri.dto.resquest.MoteurOptimisationResquest;
 import com.gestNutri.dto.response.MoteurOptimisationResponse;
 import com.gestNutri.service.MoteurOptimisationService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,8 +21,9 @@ public class MoteurOptimisationController {
 
 	@PostMapping("/resoudre")
 	public ResponseEntity<MoteurOptimisationResponse> resoudre(
-			@RequestBody MoteurOptimisationResquest request) {
+			@Valid @RequestBody MoteurOptimisationResquest request) {
 		MoteurOptimisationResponse response = moteurOptimisationService.resoudre(request);
-		return response.succes() ? ResponseEntity.ok(response) : ResponseEntity.unprocessableEntity().body(response);
+		return response.succes() ? ResponseEntity.ok(response)
+				: ResponseEntity.status(422).body(response);
 	}
 }

@@ -3,6 +3,7 @@ package com.gestNutri.controller;
 import com.gestNutri.dto.resquest.AuthResquest;
 import com.gestNutri.dto.response.AuthResponse;
 import com.gestNutri.security.JwtUtil;
+import jakarta.validation.Valid;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthResquest request) {
+    public AuthResponse login(@Valid @RequestBody AuthResquest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.motDePasse()));
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.email());

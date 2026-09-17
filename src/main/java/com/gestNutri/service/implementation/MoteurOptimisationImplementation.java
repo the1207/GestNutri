@@ -157,6 +157,7 @@ public class MoteurOptimisationImplementation implements MoteurOptimisationServi
 			resultat.setNomNutriment(besoin.getNomNutriment());
 			resultat.setValeurObtenue(obtenu);
 			resultat.setValeurCible(besoin.getValeurMin());
+			resultat.setValeurCibleMax(besoin.getValeurMax());
 			resultat.setConforme(obtenu >= valeur(besoin.getValeurMin())
 					&& obtenu <= valeur(besoin.getValeurMax()));
 			resultat.setFormule(formule);
