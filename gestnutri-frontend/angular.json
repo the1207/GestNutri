@@ -2,7 +2,8 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": "6aabd8dc-7f34-4f57-bfb2-21fce7cbb99a"
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -25,8 +26,9 @@
               }
             ],
             "styles": [
+              "node_modules/primeicons/primeicons.css",
               "src/styles.css"
-            ],
+          ],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
@@ -75,6 +77,7 @@
         "test": {
           "builder": "@angular/build:unit-test"
         }
+        
       }
     }
   }

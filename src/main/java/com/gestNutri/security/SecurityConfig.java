@@ -68,6 +68,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**", "/actuator/health").permitAll()
                         .requestMatchers("/api/matieres-premieres/**")
                         .hasAnyRole("GESTIONNAIRE_ACHATS", "ADMINISTRATEUR")
+                        .requestMatchers("/api/utilisateurs/**")
+                        .hasRole("ADMINISTRATEUR")
                         .requestMatchers("/api/profils-nutritionnels/**", "/api/besoins-nutritionnels/**")
                         .hasAnyRole("NUTRITIONNISTE", "ADMINISTRATEUR")
                         .requestMatchers("/api/moteur-optimisation/**")

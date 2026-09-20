@@ -17,6 +17,8 @@ public class MatierePremiere {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nom;
+	private Double matiereSeche;
+	private Double aas;
 	private Double prixUnitaire;
 	private Double tauxIncorporationMin;
 	private Double tauxIncorporationMax;
@@ -29,4 +31,5 @@ public class MatierePremiere {
 	private Double matieresGrasses;
 	private Double celluloseBrute;
 	private Double energieMetabolisable;
+	private Boolean disponible;
 }
