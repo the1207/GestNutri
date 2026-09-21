@@ -1,0 +1,35 @@
+<h2>Nouveau profil nutritionnel</h2>
+
+<form (ngSubmit)="onSubmit()">
+  <label>
+    Nom de la catégorie
+    <input type="text" [(ngModel)]="nomCategorie" name="nomCategorie" required />
+  </label>
+
+  <label>
+    Stade
+    <input type="text" [(ngModel)]="stade" name="stade" required />
+  </label>
+
+  <label>
+    <input type="checkbox" [(ngModel)]="estPersonnalise" name="estPersonnalise" />
+    Personnalisé
+  </label>
+
+  <h3>Besoins nutritionnels</h3>
+  @for (besoin of besoins; track $index) {
+    <div>
+      <select [(ngModel)]="besoin.nomNutriment" [name]="'nutriment' + $index">
+        @for (nutriment of nutriments; track nutriment) {
+          <option [value]="nutriment">{{ nutriment }}</option>
+        }
+      </select>
+      <input type="number" placeholder="Min" [(ngModel)]="besoin.valeurMin" [name]="'min' + $index" />
+      <input type="number" placeholder="Max" [(ngModel)]="besoin.valeurMax" [name]="'max' + $index" />
+      <button type="button" (click)="supprimerLigne($index)">Supprimer</button>
+    </div>
+  }
+  <button type="button" (click)="ajouterLigne()">Ajouter un nutriment</button>
+
+  <button type="submit">Enregistrer le profil</button>
+</form>

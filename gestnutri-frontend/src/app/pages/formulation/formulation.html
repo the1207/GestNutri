@@ -1,0 +1,90 @@
+<h2>Nouvelle formulation</h2>
+
+<p><a routerLink="/profils/nouveau">Créer un profil nutritionnel</a></p>
+
+@if (erreurChargement) {
+  <p>{{ erreurChargement }}</p>
+}
+
+<form (ngSubmit)="onSubmit()">
+  <fieldset>
+    <legend>Matières premières</legend>
+    @for (matiere of matieres; track matiere.id) {
+      <label>
+        <input
+          type="checkbox"
+          [checked]="matieresSelectionneesIds.includes(matiere.id)"
+          (change)="toggleMatiere(matiere.id, $any($event.target).checked)"
+        />
+        {{ matiere.nom }} ({{ matiere.prixUnitaire }} / kg)
+      </label>
+    } @empty {
+      <p>Aucune matière première disponible.</p>
+    }
+  </fieldset>
+
+  <label>
+    Profil nutritionnel
+    <select [(ngModel)]="profilSelectionneId" name="profil" required>
+      <option [ngValue]="null">Sélectionner un profil</option>
+      @for (profil of profils; track profil.id) {
+        <option [ngValue]="profil.id">{{ profil.nomCategorie }} - {{ profil.stade }}</option>
+      }
+    </select>
+  </label>
+
+  <label>
+    Quantité totale (kg)
+    <input type="number" [(ngModel)]="quantiteTotale" name="quantiteTotale" min="0.01" required />
+  </label>
+
+  <button type="submit" [disabled]="chargement">Calculer</button>
+</form>
+
+@if (chargement) {
+  <p>Calcul en cours...</p>
+}
+
+@if (resultat) {
+  @if (resultat.succes && resultat.formule) {
+    <div>
+      <h3>Formule calculée</h3>
+      <p>Coût total : {{ resultat.formule.coutTotal }}</p>
+      <p>Coût par kg : {{ resultat.formule.coutParKg }}</p>
+      <p>Statut : {{ resultat.formule.statut }}</p>
+
+      <h4>Composition</h4>
+      <ul>
+        @for (ligne of resultat.formule.lignes; track ligne.id) {
+          <li>{{ ligne.matierePremiereNom }} : {{ ligne.quantiteKg }} kg ({{ ligne.pourcentage }}%)</li>
+        }
+      </ul>
+
+      <h4>Analyse nutritionnelle</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Nutriment</th>
+            <th>Obtenu</th>
+            <th>Cible min</th>
+            <th>Cible max</th>
+            <th>Conforme</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (analyse of resultat.formule.resultats; track analyse.id) {
+            <tr>
+              <td>{{ analyse.nomNutriment }}</td>
+              <td>{{ analyse.valeurObtenue }}</td>
+              <td>{{ analyse.valeurCible }}</td>
+              <td>{{ analyse.valeurCibleMax }}</td>
+              <td>{{ analyse.conforme ? 'Oui' : 'Non' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <p>{{ resultat.erreur }}</p>
+  }
+}

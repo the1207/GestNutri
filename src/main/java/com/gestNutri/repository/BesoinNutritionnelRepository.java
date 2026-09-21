@@ -1,4 +1,7 @@
 package com.gestNutri.repository;
 
-public interface BesoinNutritionnelRepository {
+import com.gestNutri.entities.BesoinNutritionnel;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BesoinNutritionnelRepository extends JpaRepository<BesoinNutritionnel, Long> {
 }

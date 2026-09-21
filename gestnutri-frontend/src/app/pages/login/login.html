@@ -1,0 +1,8 @@
+<form (ngSubmit)="onSubmit()">
+  <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required />
+  <input type="password" name="motDePasse" [(ngModel)]="motDePasse" placeholder="Mot de passe" required />
+  <button type="submit">Se connecter</button>
+  @if (erreur) {
+    <p>{{ erreur }}</p>
+  }
+</form>

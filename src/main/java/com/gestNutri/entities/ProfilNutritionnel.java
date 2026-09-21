@@ -19,6 +19,8 @@ public class ProfilNutritionnel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nom;
+	private String stade;
+	private Boolean estPersonnalise;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<BesoinNutritionnel> besoins = new ArrayList<>();

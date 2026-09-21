@@ -1,4 +1,10 @@
 package com.gestNutri.repository;
 
-public interface LigneFormuleRepository {
+import com.gestNutri.entities.LigneFormule;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface LigneFormuleRepository extends JpaRepository<LigneFormule, Long> {
+	List<LigneFormule> findByFormuleId(Long formuleId);
 }

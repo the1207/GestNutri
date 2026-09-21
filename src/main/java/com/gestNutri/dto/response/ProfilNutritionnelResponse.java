@@ -1,4 +1,11 @@
 package com.gestNutri.dto.response;
 
-public record ProfilNutritionnelResponse() {
+import java.util.List;
+
+public record ProfilNutritionnelResponse(
+	Long id,
+	String nomCategorie,
+	String stade,
+	Boolean estPersonnalise,
+	List<BesoinNutritionnelResponse> besoins) {
 }

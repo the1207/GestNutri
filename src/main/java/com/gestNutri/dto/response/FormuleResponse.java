@@ -1,6 +1,7 @@
 package com.gestNutri.dto.response;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record FormuleResponse(
 	Long id,
@@ -9,5 +10,7 @@ public record FormuleResponse(
 	Double quantiteTotale,
 	Double coutTotal,
 	Double coutParKg,
-	String statut) {
+	String statut,
+	List<LigneFormuleResponse> lignes,
+	List<ResultatAnalyseResponse> resultats) {
 }

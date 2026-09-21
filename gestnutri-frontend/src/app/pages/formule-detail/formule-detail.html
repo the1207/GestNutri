@@ -1,0 +1,40 @@
+@if (erreur) {
+  <p>{{ erreur }}</p>
+} @else if (formule) {
+  <h2>Formule du {{ formule.dateCreation }}</h2>
+  <p>Coût total : {{ formule.coutTotal }} | Coût/kg : {{ formule.coutParKg }}</p>
+  <p>Statut : {{ formule.statut }}</p>
+  <button type="button" (click)="telecharger('pdf')">Exporter PDF</button>
+  <button type="button" (click)="telecharger('csv')">Exporter CSV</button>
+
+  <h3>Composition</h3>
+  <ul>
+    @for (ligne of formule.lignes; track ligne.id) {
+      <li>{{ ligne.matierePremiereNom }} : {{ ligne.quantiteKg }} kg ({{ ligne.pourcentage }}%)</li>
+    }
+  </ul>
+
+  <h3>Analyse nutritionnelle</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Nutriment</th>
+        <th>Obtenu</th>
+        <th>Cible min</th>
+        <th>Cible max</th>
+        <th>Conforme</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (resultat of formule.resultats; track resultat.id) {
+        <tr>
+          <td>{{ resultat.nomNutriment }}</td>
+          <td>{{ resultat.valeurObtenue }}</td>
+          <td>{{ resultat.valeurCible }}</td>
+          <td>{{ resultat.valeurCibleMax }}</td>
+          <td>{{ resultat.conforme ? 'Oui' : 'Non' }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
