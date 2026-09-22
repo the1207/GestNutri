@@ -1,22 +1,23 @@
 @if (erreur) {
-  <p>{{ erreur }}</p>
+  <p-message severity="error">{{ erreur }}</p-message>
 } @else if (formule) {
-  <h2>Formule du {{ formule.dateCreation }}</h2>
+  <p-card [header]="'Formule du ' + formule.dateCreation">
   <p>Coût total : {{ formule.coutTotal }} | Coût/kg : {{ formule.coutParKg }}</p>
-  <p>Statut : {{ formule.statut }}</p>
-  <button type="button" (click)="telecharger('pdf')">Exporter PDF</button>
-  <button type="button" (click)="telecharger('csv')">Exporter CSV</button>
+  <p-tag [value]="formule.statut" severity="success" />
+  <div class="export-buttons">
+    <p-button icon="pi pi-file-pdf" text pTooltip="Exporter en PDF" aria-label="Exporter en PDF" (onClick)="telecharger('pdf')" />
+    <p-button icon="pi pi-file-excel" text severity="secondary" pTooltip="Exporter en CSV" aria-label="Exporter en CSV" (onClick)="telecharger('csv')" />
+  </div>
 
   <h3>Composition</h3>
-  <ul>
-    @for (ligne of formule.lignes; track ligne.id) {
-      <li>{{ ligne.matierePremiereNom }} : {{ ligne.quantiteKg }} kg ({{ ligne.pourcentage }}%)</li>
-    }
-  </ul>
+  <p-table [value]="formule.lignes" responsiveLayout="scroll">
+    <ng-template pTemplate="header"><tr><th>Matière</th><th>Quantité (kg)</th><th>%</th></tr></ng-template>
+    <ng-template pTemplate="body" let-ligne><tr><td>{{ ligne.matierePremiereNom }}</td><td>{{ ligne.quantiteKg }}</td><td>{{ ligne.pourcentage }}</td></tr></ng-template>
+  </p-table>
 
   <h3>Analyse nutritionnelle</h3>
-  <table>
-    <thead>
+  <p-table [value]="formule.resultats" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
       <tr>
         <th>Nutriment</th>
         <th>Obtenu</th>
@@ -24,17 +25,10 @@
         <th>Cible max</th>
         <th>Conforme</th>
       </tr>
-    </thead>
-    <tbody>
-      @for (resultat of formule.resultats; track resultat.id) {
-        <tr>
-          <td>{{ resultat.nomNutriment }}</td>
-          <td>{{ resultat.valeurObtenue }}</td>
-          <td>{{ resultat.valeurCible }}</td>
-          <td>{{ resultat.valeurCibleMax }}</td>
-          <td>{{ resultat.conforme ? 'Oui' : 'Non' }}</td>
-        </tr>
-      }
-    </tbody>
-  </table>
+    </ng-template>
+    <ng-template pTemplate="body" let-resultat>
+      <tr><td>{{ resultat.nomNutriment }}</td><td>{{ resultat.valeurObtenue }}</td><td>{{ resultat.valeurCible }}</td><td>{{ resultat.valeurCibleMax }}</td><td><p-tag [value]="resultat.conforme ? 'Oui' : 'Non'" [severity]="resultat.conforme ? 'success' : 'danger'" /></td></tr>
+    </ng-template>
+  </p-table>
+  </p-card>
 }

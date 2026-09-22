@@ -24,7 +24,7 @@ export interface MatierePremiereResponse {
 
 @Injectable({ providedIn: 'root' })
 export class MatierePremiereService {
-  private readonly apiUrl = 'http://localhost:8082/api/matieres-premieres';
+  private readonly apiUrl = 'http://localhost:8080/api/matieres-premieres';
 
   constructor(private http: HttpClient) {}
 

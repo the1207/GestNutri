@@ -14,7 +14,7 @@ export interface AuthResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly apiUrl = 'http://localhost:8082/api/auth';
+  private readonly apiUrl = 'http://localhost:8080/api/auth';
   private readonly platformId = inject(PLATFORM_ID);
 
   constructor(private http: HttpClient) {}

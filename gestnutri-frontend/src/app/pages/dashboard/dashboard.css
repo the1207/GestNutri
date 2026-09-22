@@ -1,0 +1,18 @@
+.app-title {
+  margin-right: 1rem;
+  color: #14532d;
+  font-size: 1.15rem;
+}
+
+.dashboard-content {
+  width: min(100% - 2rem, 72rem);
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+}
+
+@media (max-width: 640px) {
+  .dashboard-content {
+    width: min(100% - 1.5rem, 72rem);
+    padding-top: 1.25rem;
+  }
+}

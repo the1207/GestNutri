@@ -12,18 +12,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class AdminDataInitializer {
 
     private static final String ADMIN_EMAIL = "admin1@gestnutri.local";
-    private static final String ADMIN_PASSWORD = "admin123";
+    private static final String ADMIN_PASSWORD = "admin1";
 
     @Bean
     public CommandLineRunner initAdmin(
             UtilisateurRepository utilisateurRepository,
             PasswordEncoder passwordEncoder) {
         return args -> {
-            if (utilisateurRepository.findByEmail(ADMIN_EMAIL).isPresent()) {
-                return;
-            }
-
-            Utilisateur admin = new Utilisateur();
+            Utilisateur admin = utilisateurRepository.findByEmail(ADMIN_EMAIL).orElseGet(Utilisateur::new);
             admin.setEmail(ADMIN_EMAIL);
             admin.setMotDePasse(passwordEncoder.encode(ADMIN_PASSWORD));
             admin.setRole(Role.ADMINISTRATEUR);

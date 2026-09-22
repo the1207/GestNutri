@@ -3,18 +3,30 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormuleService } from '../../services/formule.service';
 import { FormuleResponse } from '../../services/formule.model';
+import { NotificationService } from '../../services/notification.service';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { MessageModule } from 'primeng/message';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-formule-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonModule, CardModule, MessageModule, TableModule, TagModule, TooltipModule],
   templateUrl: './formule-detail.html',
+  styleUrl: './formule-detail.css',
 })
 export class FormuleDetail implements OnInit {
   formule: FormuleResponse | null = null;
   erreur = '';
 
-  constructor(private route: ActivatedRoute, private formuleService: FormuleService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private formuleService: FormuleService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
@@ -25,7 +37,10 @@ export class FormuleDetail implements OnInit {
 
     this.formuleService.findById(id).subscribe({
       next: (formule) => (this.formule = formule),
-      error: () => (this.erreur = 'Impossible de charger cette formule.'),
+      error: () => {
+        this.erreur = 'Impossible de charger cette formule.';
+        this.notificationService.error('Formule inaccessible.');
+      },
     });
   }
 
@@ -46,8 +61,12 @@ export class FormuleDetail implements OnInit {
         lien.download = `formule-${this.formule!.id}.${type}`;
         lien.click();
         window.URL.revokeObjectURL(url);
+        this.notificationService.success(`Export ${type.toUpperCase()} téléchargé avec succès.`);
       },
-      error: () => (this.erreur = `Impossible de télécharger le fichier ${type.toUpperCase()}.`),
+      error: () => {
+        this.erreur = `Impossible de télécharger le fichier ${type.toUpperCase()}.`;
+        this.notificationService.error(`Échec du téléchargement ${type.toUpperCase()}.`);
+      },
     });
   }
 }

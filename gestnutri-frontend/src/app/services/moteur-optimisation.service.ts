@@ -17,7 +17,7 @@ export interface MoteurOptimisationResponse {
 
 @Injectable({ providedIn: 'root' })
 export class MoteurOptimisationService {
-  private readonly apiUrl = 'http://localhost:8082/api/moteur-optimisation';
+  private readonly apiUrl = 'http://localhost:8080/api/moteur-optimisation';
 
   constructor(private http: HttpClient) {}
 

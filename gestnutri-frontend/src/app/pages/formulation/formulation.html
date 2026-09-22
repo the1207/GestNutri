@@ -1,68 +1,66 @@
-<h2>Nouvelle formulation</h2>
-
-<p><a routerLink="/profils/nouveau">Créer un profil nutritionnel</a></p>
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">Production</p>
+    <h2>Nouvelle formulation</h2>
+  </div>
+  <a pButton routerLink="/profils/nouveau" icon="pi pi-plus" text pTooltip="Ajouter un profil nutritionnel" aria-label="Ajouter un profil nutritionnel"></a>
+</div>
 
 @if (erreurChargement) {
-  <p>{{ erreurChargement }}</p>
+  <p-message severity="error">{{ erreurChargement }}</p-message>
 }
 
-<form (ngSubmit)="onSubmit()">
-  <fieldset>
-    <legend>Matières premières</legend>
+<p-card header="Paramètres de calcul" styleClass="section-card">
+  <form (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label>Matières premières</label>
+      <div class="matieres-list">
     @for (matiere of matieres; track matiere.id) {
-      <label>
-        <input
-          type="checkbox"
-          [checked]="matieresSelectionneesIds.includes(matiere.id)"
-          (change)="toggleMatiere(matiere.id, $any($event.target).checked)"
-        />
-        {{ matiere.nom }} ({{ matiere.prixUnitaire }} / kg)
+      <label class="matiere-item">
+        <p-checkbox [binary]="true" [ngModel]="matieresSelectionneesIds.includes(matiere.id)" (onChange)="toggleMatiere(matiere.id, $event.checked)" [name]="'matiere' + matiere.id" />
+        <span>{{ matiere.nom }} <small>{{ matiere.prixUnitaire }} / kg</small></span>
       </label>
     } @empty {
       <p>Aucune matière première disponible.</p>
     }
-  </fieldset>
+      </div>
+    </div>
 
-  <label>
-    Profil nutritionnel
-    <select [(ngModel)]="profilSelectionneId" name="profil" required>
-      <option [ngValue]="null">Sélectionner un profil</option>
-      @for (profil of profils; track profil.id) {
-        <option [ngValue]="profil.id">{{ profil.nomCategorie }} - {{ profil.stade }}</option>
-      }
-    </select>
-  </label>
+    <div class="field">
+      <label for="profil">Profil nutritionnel</label>
+      <p-select inputId="profil" [(ngModel)]="profilSelectionneId" name="profil" [options]="profils" optionLabel="nomCategorie" optionValue="id" placeholder="Sélectionner un profil" [fluid]="true" />
+    </div>
 
-  <label>
-    Quantité totale (kg)
-    <input type="number" [(ngModel)]="quantiteTotale" name="quantiteTotale" min="0.01" required />
-  </label>
+    <div class="field">
+      <label for="quantite">Quantité totale (kg)</label>
+      <p-inputnumber inputId="quantite" [(ngModel)]="quantiteTotale" name="quantiteTotale" [min]="0.01" [fluid]="true" />
+    </div>
 
-  <button type="submit" [disabled]="chargement">Calculer</button>
-</form>
+    <p-button label="Calculer" icon="pi pi-calculator" type="submit" [loading]="chargement" />
+  </form>
+</p-card>
 
 @if (chargement) {
-  <p>Calcul en cours...</p>
+  <p-message severity="info">Calcul en cours...</p-message>
 }
 
 @if (resultat) {
   @if (resultat.succes && resultat.formule) {
-    <div>
-      <h3>Formule calculée</h3>
-      <p>Coût total : {{ resultat.formule.coutTotal }}</p>
-      <p>Coût par kg : {{ resultat.formule.coutParKg }}</p>
-      <p>Statut : {{ resultat.formule.statut }}</p>
+    <p-card header="Formule calculée" styleClass="section-card">
+      <div class="metrics">
+        <span>Coût total <strong>{{ resultat.formule.coutTotal }}</strong></span>
+        <span>Coût par kg <strong>{{ resultat.formule.coutParKg }}</strong></span>
+        <p-tag [value]="resultat.formule.statut" severity="success" />
+      </div>
 
       <h4>Composition</h4>
-      <ul>
-        @for (ligne of resultat.formule.lignes; track ligne.id) {
-          <li>{{ ligne.matierePremiereNom }} : {{ ligne.quantiteKg }} kg ({{ ligne.pourcentage }}%)</li>
-        }
-      </ul>
-
+      <p-table [value]="resultat.formule.lignes" responsiveLayout="scroll">
+        <ng-template pTemplate="header"><tr><th>Matière</th><th>Quantité (kg)</th><th>%</th></tr></ng-template>
+        <ng-template pTemplate="body" let-ligne><tr><td>{{ ligne.matierePremiereNom }}</td><td>{{ ligne.quantiteKg }}</td><td>{{ ligne.pourcentage }}</td></tr></ng-template>
+      </p-table>
       <h4>Analyse nutritionnelle</h4>
-      <table>
-        <thead>
+      <p-table [value]="resultat.formule.resultats" responsiveLayout="scroll">
+        <ng-template pTemplate="header">
           <tr>
             <th>Nutriment</th>
             <th>Obtenu</th>
@@ -70,21 +68,13 @@
             <th>Cible max</th>
             <th>Conforme</th>
           </tr>
-        </thead>
-        <tbody>
-          @for (analyse of resultat.formule.resultats; track analyse.id) {
-            <tr>
-              <td>{{ analyse.nomNutriment }}</td>
-              <td>{{ analyse.valeurObtenue }}</td>
-              <td>{{ analyse.valeurCible }}</td>
-              <td>{{ analyse.valeurCibleMax }}</td>
-              <td>{{ analyse.conforme ? 'Oui' : 'Non' }}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+        </ng-template>
+        <ng-template pTemplate="body" let-analyse>
+          <tr><td>{{ analyse.nomNutriment }}</td><td>{{ analyse.valeurObtenue }}</td><td>{{ analyse.valeurCible }}</td><td>{{ analyse.valeurCibleMax }}</td><td><p-tag [value]="analyse.conforme ? 'Oui' : 'Non'" [severity]="analyse.conforme ? 'success' : 'danger'" /></td></tr>
+        </ng-template>
+      </p-table>
+    </p-card>
   } @else {
-    <p>{{ resultat.erreur }}</p>
+    <p-message severity="error">{{ resultat.erreur ?? 'Erreur inconnue.' }}</p-message>
   }
 }

@@ -1,0 +1,38 @@
+<div class="page-heading">
+  <div><p class="eyebrow">Référentiel</p><h2>Profils nutritionnels</h2></div>
+  <a pButton routerLink="/profils/nouveau" icon="pi pi-plus" text pTooltip="Ajouter un profil" aria-label="Ajouter un profil"></a>
+</div>
+
+@if (erreur) {
+  <p-message severity="error">{{ erreur }}</p-message>
+} @else if (profils.length === 0) {
+  <p-message severity="info">Aucun profil nutritionnel enregistré.</p-message>
+} @else {
+  <p-table [value]="profils" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr><th>Catégorie</th><th>Stade</th><th>Type</th><th>Actions</th></tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-profil>
+      <tr>
+        <td>{{ profil.nomCategorie }}</td>
+        <td>{{ profil.stade }}</td>
+        <td><p-tag [value]="profil.estPersonnalise ? 'Personnalisé' : 'Standard'" [severity]="profil.estPersonnalise ? 'info' : 'secondary'" /></td>
+        <td class="actions">
+          <p-button icon="pi pi-eye" text pTooltip="Voir les besoins" aria-label="Voir les besoins" (onClick)="voir(profil)" />
+          <a pButton [routerLink]="['/profils/nouveau']" [queryParams]="{ id: profil.id }" icon="pi pi-pencil" text severity="secondary" pTooltip="Modifier le profil" aria-label="Modifier le profil"></a>
+          <p-button icon="pi pi-trash" text severity="danger" pTooltip="Supprimer le profil" aria-label="Supprimer le profil" (onClick)="supprimer(profil)" />
+        </td>
+      </tr>
+      @if (profilVoir?.id === profil.id) {
+        <tr class="details-row"><td colspan="4">
+          <p-card header="Besoins nutritionnels">
+            @if (profil.besoins.length === 0) { <span>Aucun besoin enregistré.</span> }
+            @for (besoin of profil.besoins; track besoin.id) {
+              <span class="need">{{ besoin.nomNutriment }} : {{ besoin.valeurMin }} - {{ besoin.valeurMax }}</span>
+            }
+          </p-card>
+        </td></tr>
+      }
+    </ng-template>
+  </p-table>
+}

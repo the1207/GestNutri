@@ -5,7 +5,7 @@ import { FormuleResponse } from './formule.model';
 
 @Injectable({ providedIn: 'root' })
 export class FormuleService {
-  private readonly apiUrl = 'http://localhost:8082/api/formules';
+  private readonly apiUrl = 'http://localhost:8080/api/formules';
 
   constructor(private http: HttpClient) {}
 
@@ -15,6 +15,10 @@ export class FormuleService {
 
   findById(id: number): Observable<FormuleResponse> {
     return this.http.get<FormuleResponse>(`${this.apiUrl}/${id}`);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
   telechargerPdf(id: number): Observable<Blob> {

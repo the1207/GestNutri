@@ -14,12 +14,36 @@ import {
   MoteurOptimisationResponse,
   MoteurOptimisationService,
 } from '../../services/moteur-optimisation.service';
+import { NotificationService } from '../../services/notification.service';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { MessageModule } from 'primeng/message';
+import { SelectModule } from 'primeng/select';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-formulation',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterLink,
+    ButtonModule,
+    CardModule,
+    CheckboxModule,
+    InputNumberModule,
+    MessageModule,
+    SelectModule,
+    TableModule,
+    TagModule,
+    TooltipModule,
+  ],
   templateUrl: './formulation.html',
+  styleUrl: './formulation.css',
 })
 export class Formulation implements OnInit {
   matieres: MatierePremiereResponse[] = [];
@@ -34,17 +58,24 @@ export class Formulation implements OnInit {
   constructor(
     private matierePremiereService: MatierePremiereService,
     private profilNutritionnelService: ProfilNutritionnelService,
-    private moteurOptimisationService: MoteurOptimisationService
+    private moteurOptimisationService: MoteurOptimisationService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
     this.matierePremiereService.findAll().subscribe({
       next: (matieres) => (this.matieres = matieres.filter((matiere) => matiere.disponible)),
-      error: () => (this.erreurChargement = 'Impossible de charger les matières premières.'),
+      error: () => {
+        this.erreurChargement = 'Impossible de charger les matières premières.';
+        this.notificationService.error('Matières premières inaccessibles.');
+      },
     });
     this.profilNutritionnelService.findAll().subscribe({
       next: (profils) => (this.profils = profils),
-      error: () => (this.erreurChargement = 'Impossible de charger les profils nutritionnels.'),
+      error: () => {
+        this.erreurChargement = 'Impossible de charger les profils nutritionnels.';
+        this.notificationService.error('Profils nutritionnels inaccessibles.');
+      },
     });
   }
 
@@ -68,6 +99,7 @@ export class Formulation implements OnInit {
         erreur: 'Sélectionnez un profil, une quantité positive et au moins une matière première.',
         formule: null,
       };
+      this.notificationService.warning('Formulation impossible : complétez les informations demandées.');
       return;
     }
 
@@ -83,6 +115,11 @@ export class Formulation implements OnInit {
         next: (reponse) => {
           this.resultat = reponse;
           this.chargement = false;
+          if (reponse.succes) {
+            this.notificationService.success('Formule créée avec succès.');
+          } else {
+            this.notificationService.warning(reponse.erreur ?? 'La formulation n’a pas pu être calculée.');
+          }
         },
         error: (err) => {
           this.resultat = err.error ?? {
@@ -91,6 +128,7 @@ export class Formulation implements OnInit {
             formule: null,
           };
           this.chargement = false;
+          this.notificationService.error('Erreur lors de la création de la formule.');
         },
       });
   }

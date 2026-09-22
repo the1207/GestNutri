@@ -7,7 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="besoin nutritionnel")
 public class BesoinNutritionnel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

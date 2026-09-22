@@ -29,9 +29,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public AuthResponse login(@Valid @RequestBody AuthResquest request) {
+        String identifiant = "admin1".equalsIgnoreCase(request.email())
+            ? "admin1@gestnutri.local"
+            : request.email();
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.email(), request.motDePasse()));
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.email());
+            new UsernamePasswordAuthenticationToken(identifiant, request.motDePasse()));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(identifiant);
         return new AuthResponse(jwtUtil.genererToken(userDetails));
     }
 }

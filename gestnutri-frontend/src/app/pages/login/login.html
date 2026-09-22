@@ -1,8 +1,34 @@
-<form (ngSubmit)="onSubmit()">
-  <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required />
-  <input type="password" name="motDePasse" [(ngModel)]="motDePasse" placeholder="Mot de passe" required />
-  <button type="submit">Se connecter</button>
-  @if (erreur) {
-    <p>{{ erreur }}</p>
-  }
-</form>
+<main class="login-container">
+  <p-card header="Connexion" styleClass="login-card">
+    <form (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label for="email">Identifiant</label>
+        <input pInputText id="email" type="text" name="email" [(ngModel)]="email" placeholder="admin1" required />
+      </div>
+
+      <div class="field">
+        <label for="motDePasse">Mot de passe</label>
+        <p-password
+          inputId="motDePasse"
+          name="motDePasse"
+          [(ngModel)]="motDePasse"
+          [feedback]="false"
+          [toggleMask]="true"
+          [fluid]="true"
+          required
+        />
+      </div>
+
+      <p-button
+        type="submit"
+        label="Se connecter"
+        icon="pi pi-sign-in"
+        styleClass="login-submit"
+      />
+
+      @if (erreur) {
+        <p-message class="login-error" severity="error">{{ erreur }}</p-message>
+      }
+    </form>
+  </p-card>
+</main>

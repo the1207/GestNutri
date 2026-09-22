@@ -11,7 +11,7 @@ export interface BesoinNutritionnelResquest {
 
 @Injectable({ providedIn: 'root' })
 export class BesoinNutritionnelService {
-  private readonly apiUrl = 'http://localhost:8082/api/besoins-nutritionnels';
+  private readonly apiUrl = 'http://localhost:8080/api/besoins-nutritionnels';
 
   constructor(private http: HttpClient) {}
 

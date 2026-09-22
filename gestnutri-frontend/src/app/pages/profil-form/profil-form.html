@@ -1,35 +1,22 @@
-<h2>Nouveau profil nutritionnel</h2>
+<div class="page-heading"><div><p class="eyebrow">Configuration</p><h2>{{ id === null ? 'Nouveau profil nutritionnel' : 'Modifier le profil nutritionnel' }}</h2></div></div>
 
-<form (ngSubmit)="onSubmit()">
-  <label>
-    Nom de la catégorie
-    <input type="text" [(ngModel)]="nomCategorie" name="nomCategorie" required />
-  </label>
-
-  <label>
-    Stade
-    <input type="text" [(ngModel)]="stade" name="stade" required />
-  </label>
-
-  <label>
-    <input type="checkbox" [(ngModel)]="estPersonnalise" name="estPersonnalise" />
-    Personnalisé
-  </label>
+<p-card>
+  <form (ngSubmit)="onSubmit()">
+    <div class="field"><label for="nomCategorie">Nom de la catégorie</label><input pInputText id="nomCategorie" [(ngModel)]="nomCategorie" name="nomCategorie" required /></div>
+    <div class="field"><label for="stade">Stade</label><input pInputText id="stade" [(ngModel)]="stade" name="stade" required /></div>
+    <div class="field-inline"><p-checkbox [binary]="true" [(ngModel)]="estPersonnalise" name="estPersonnalise" inputId="perso" /><label for="perso">Personnalisé</label></div>
 
   <h3>Besoins nutritionnels</h3>
   @for (besoin of besoins; track $index) {
     <div>
-      <select [(ngModel)]="besoin.nomNutriment" [name]="'nutriment' + $index">
-        @for (nutriment of nutriments; track nutriment) {
-          <option [value]="nutriment">{{ nutriment }}</option>
-        }
-      </select>
-      <input type="number" placeholder="Min" [(ngModel)]="besoin.valeurMin" [name]="'min' + $index" />
-      <input type="number" placeholder="Max" [(ngModel)]="besoin.valeurMax" [name]="'max' + $index" />
-      <button type="button" (click)="supprimerLigne($index)">Supprimer</button>
+      <p-select [(ngModel)]="besoin.nomNutriment" [name]="'nutriment' + $index" [options]="nutriments" />
+      <p-inputnumber placeholder="Min" [(ngModel)]="besoin.valeurMin" [name]="'min' + $index" />
+      <p-inputnumber placeholder="Max" [(ngModel)]="besoin.valeurMax" [name]="'max' + $index" />
+      <p-button icon="pi pi-trash" severity="danger" text pTooltip="Supprimer ce besoin" aria-label="Supprimer ce besoin" (onClick)="supprimerLigne($index)" />
     </div>
   }
-  <button type="button" (click)="ajouterLigne()">Ajouter un nutriment</button>
+  <p-button label="Ajouter un nutriment" icon="pi pi-plus" severity="secondary" type="button" (onClick)="ajouterLigne()" />
 
-  <button type="submit">Enregistrer le profil</button>
-</form>
+  <div class="submit-row"><p-button label="Enregistrer le profil" icon="pi pi-check" type="submit" /></div>
+  </form>
+</p-card>

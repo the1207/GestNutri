@@ -1,2 +1,45 @@
-<h1>Tableau de bord</h1>
-<router-outlet />
+<p-toolbar>
+	<ng-template #start>
+		<strong class="app-title">gestNutri</strong>
+		<a
+			pButton
+			routerLink="/formulation"
+			icon="pi pi-sliders-h"
+			text
+			pTooltip="Nouvelle formulation"
+			aria-label="Nouvelle formulation"
+		></a>
+		<a
+			pButton
+			routerLink="/formules"
+			icon="pi pi-history"
+			text
+			pTooltip="Voir l'historique"
+			aria-label="Voir l'historique"
+		></a>
+		<a
+			pButton
+			routerLink="/profils/nouveau"
+			icon="pi pi-plus"
+			text
+			pTooltip="Ajouter un profil"
+			aria-label="Ajouter un profil"
+		></a>
+		<a pButton routerLink="/profils" icon="pi pi-users" text pTooltip="Voir les profils" aria-label="Voir les profils"></a>
+	</ng-template>
+	<ng-template #end>
+		<p-button
+			icon="pi pi-sign-out"
+			text
+			severity="danger"
+			(onClick)="deconnecter()"
+			pTooltip="Se déconnecter"
+			aria-label="Se déconnecter"
+		/>
+	</ng-template>
+</p-toolbar>
+
+<main class="dashboard-content">
+	<h1>Tableau de bord</h1>
+	<router-outlet />
+</main>
