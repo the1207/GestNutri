@@ -40,6 +40,34 @@
 </p-toolbar>
 
 <main class="dashboard-content">
-	<h1>Tableau de bord</h1>
+	<section class="welcome-block">
+		<p class="eyebrow">Espace administrateur</p>
+		<h1>Tableau de bord</h1>
+		<p>Gérez vos profils nutritionnels et préparez vos formulations depuis cet espace.</p>
+	</section>
+
+	<section class="dashboard-grid" aria-label="Accès rapides">
+		<a class="dashboard-card" routerLink="/formulation">
+			<span class="card-icon"><i class="pi pi-sliders-h"></i></span>
+			<span><strong>Nouvelle formulation</strong><small>Calculer une formule optimisée</small></span>
+			<i class="pi pi-arrow-right" aria-hidden="true"></i>
+		</a>
+		<a class="dashboard-card" routerLink="/profils">
+			<span class="card-icon"><i class="pi pi-users"></i></span>
+			<span><strong>Profils nutritionnels</strong><small>Voir, modifier ou supprimer un profil</small></span>
+			<i class="pi pi-arrow-right" aria-hidden="true"></i>
+		</a>
+		<a class="dashboard-card" routerLink="/profils/nouveau">
+			<span class="card-icon"><i class="pi pi-plus"></i></span>
+			<span><strong>Ajouter un profil</strong><small>Créer un nouveau référentiel</small></span>
+			<i class="pi pi-arrow-right" aria-hidden="true"></i>
+		</a>
+		<a class="dashboard-card" routerLink="/formules">
+			<span class="card-icon"><i class="pi pi-history"></i></span>
+			<span><strong>Historique</strong><small>Consulter les formules enregistrées</small></span>
+			<i class="pi pi-arrow-right" aria-hidden="true"></i>
+		</a>
+	</section>
+
 	<router-outlet />
 </main>
